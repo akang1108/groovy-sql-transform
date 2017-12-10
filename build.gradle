@@ -1,0 +1,41 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'groovy'
+apply plugin: 'maven'
+apply plugin: 'jacoco'
+
+group = 'info.akang'
+version = '1.0'
+description = 'Groovy AST transformation for SQL syntax'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+jacocoTestReport {
+    reports {
+        xml.enabled = false
+        csv.enabled = false
+        html.enabled = true
+    }
+}
+
+test.finalizedBy jacocoTestReport
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group:'org.codehaus.groovy', name:'groovy-all', version: '2.4.13'
+    testCompile group: 'org.spockframework', name: 'spock-core', version: '1.1-groovy-2.4'
+    testCompile group: 'com.h2database', name: 'h2', version: '1.4.193'
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives sourcesJar
+}

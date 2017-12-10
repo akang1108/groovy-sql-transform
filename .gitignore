@@ -1,0 +1,21 @@
+# Project
+logs/
+
+# Gradle
+.gradle
+target/
+*.bat
+build/
+
+# Eclipse
+.settings/
+.classpath
+.project
+
+# IntelliJ
+*.iml
+.idea/
+out/
+
+# OS
+.DS_Store
