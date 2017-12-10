@@ -71,6 +71,3 @@ class Test {
 
 * Tests include using annotation at class and method levels. Also tests within a Spock Specification.
 
-## License
-
-This project is licensed under the Apache 2.0 License - see the LICENSE.md file for details.
