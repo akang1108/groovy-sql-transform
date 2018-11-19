@@ -9,12 +9,14 @@ Groovy AST Transformation to accept simple SQL DSL. Inspired by the simplicity o
 * Java
 * Groovy
 
-### Installation
+### Usage
+
+Add to your project:
 
 #### Gradle
 
 ```
-testCompile group:'info.akang', name:'groovy-sql-transform', version: '1.0'
+testCompile group:'info.akang', name:'groovy-sql-transform', version: '1.1-groovy-2.4'
 ```
 
 #### Maven
@@ -26,11 +28,6 @@ testCompile group:'info.akang', name:'groovy-sql-transform', version: '1.0'
     <version>1.0</version>
 </dependency>
 ```
-
-* Deployed to Maven Central
-* Tested with Groovy version *2.4.13* and Spock version *1.1-groovy-2.4*
-
-### Usage
 
 * Add @SqlAssist annotation at either class level or method level to support compile-time transformation.
 * Example:
@@ -62,6 +59,19 @@ class Test {
     }
 }
 ```
+
+### Notes
+
+* Version is appended with '-groovy-2.4' similar to Spock, because AST logic has a higher potential to change with Groovy version
+because it's more core Groovy functionality
+
+* @SqlAssist annotation can be used at either class level or
+method level that transforms '**insert** _tablename_ **with** _sql object_' to sql insert code.
+
+* Transformation detects an **insert** MethodCallExpression and a **with** MethodCallExpression within a statement as
+a marker to start an insert sql block to be transformed at compilation time.
+
+* My intention is to use this for testing or tooling purposes, not production apps.
 
 ## Running the Tests
 

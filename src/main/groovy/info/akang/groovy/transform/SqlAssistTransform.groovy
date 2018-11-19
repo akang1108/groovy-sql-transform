@@ -219,11 +219,11 @@ class SqlAssistTransform extends AbstractASTTransformation {
         def insertQuery = "insert into ${tablename} (${columnHeaders.join(',')}) values ('${data.join('\',\'')}')"
 
         Statement stmt = new ExpressionStatement(
-                new MethodCallExpression(
-                        new VariableExpression(sql),
-                        new ConstantExpression("execute"),
-                        new ArgumentListExpression(new ConstantExpression(insertQuery.toString()))
-                )
+            new MethodCallExpression(
+                new VariableExpression(sql),
+                new ConstantExpression("execute"),
+                new ArgumentListExpression(new ConstantExpression(insertQuery.toString()))
+            )
         )
 
         return stmt

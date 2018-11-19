@@ -1,5 +1,10 @@
 package info.akang.groovy.transform
 
+/**
+ *
+ *
+ *
+ */
 class SqlAssistSpockTest extends GroovyTestCase {
 
     void testSqlAssistTransform() {

@@ -1,15 +1,29 @@
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'groovy'
-apply plugin: 'maven'
+//apply plugin: 'maven-publish'
+//apply plugin: 'signing'
 apply plugin: 'jacoco'
 
 group = 'info.akang'
-version = '1.0'
-description = 'Groovy AST transformation for SQL syntax'
+version = '1.0-groovy-2.4'
+description = 'Groovy AST transformation to assist with SQL inserts'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
+
+//def isReleaseBuild() {
+//    return version.contains("SNAPSHOT") == false
+//}
+//
+//allprojects {
+//    version = ver
+//    group = grp
+//
+//    repositories {
+//        mavenCentral()
+//    }
+//}
 
 jacocoTestReport {
     reports {
@@ -26,7 +40,7 @@ repositories {
 }
 
 dependencies {
-    compile group:'org.codehaus.groovy', name:'groovy-all', version: '2.4.13'
+    compile group:'org.codehaus.groovy', name:'groovy-all', version: '2.4.15'
     testCompile group: 'org.spockframework', name: 'spock-core', version: '1.1-groovy-2.4'
     testCompile group: 'com.h2database', name: 'h2', version: '1.4.193'
 }
@@ -37,5 +51,165 @@ task sourcesJar(type: Jar, dependsOn: classes) {
 }
 
 artifacts {
+    archives jar
     archives sourcesJar
 }
+
+//signing {
+//    sign configurations.archives
+//}
+
+jar {
+    from 'LICENSE'
+}
+
+
+//publishing {
+//    publications {
+//        mavenJava(MavenPublication) {
+//            customizePom(pom, rootProject)
+//            from components.java
+//
+//            artifact sourcesJar
+//            artifact javadocJar
+//
+//            // sign the pom
+//            pom.withXml {
+//                def pomFile = file("${project.buildDir}/generated-pom.xml")
+//                writeTo(pomFile)
+//                def pomAscFile = signing.sign(pomFile).signatureFiles[0]
+//                artifact(pomAscFile) {
+//                    classifier = null
+//                    extension = 'pom.asc'
+//                }
+//                pomFile.delete()
+//            }
+//
+//            // sign the artifacts
+//            project.tasks.signArchives.signatureFiles.each {
+//                artifact(it) {
+//                    def matcher = it.file =~ /-(sources|javadoc)\.jar\.asc$/
+//                    if (matcher.find()) {
+//                        classifier = matcher.group(1)
+//                    } else {
+//                        classifier = null
+//                    }
+//                    extension = 'jar.asc'
+//                }
+//            }
+//        }
+//    }
+//    repositories {
+//        maven {
+//            url "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+//            credentials {
+//                username sonatypeUsername
+//                password sonatypePassword
+//            }
+//        }
+//    }
+//}
+//
+//
+//def customizePom(pom, gradleProject) {
+//    pom.withXml {
+//        def root = asNode()
+//
+//        // eliminate test-scoped dependencies (no need in maven central POMs)
+//        root.dependencies.removeAll { dep ->
+//            dep.scope == "test"
+//        }
+//
+//        // add all items necessary for maven central publication
+//        root.children().last() + {
+//            resolveStrategy = Closure.DELEGATE_FIRST
+//
+//            description gradleProject.description
+//            name 'Repo URL parser'
+//            url 'https://github.com/igr/repo-url-parser'
+//            organization {
+//                name 'akang'
+//                url 'http://akang.info'
+//            }
+//            issueManagement {
+//                system 'GitHub'
+//                url 'https://github.com/akang1108/groovy-sql-transform/issues'
+//            }
+//            licenses {
+//                license {
+//                    name 'The MIT License (MIT)'
+//                    url 'http://opensource.org/licenses/MIT'
+//                }
+//            }
+//            scm {
+//                connection 'scm:git:git://github.com/akang1108/groovy-sql-transform.git'
+//                developerConnection 'scm:git:ssh://github.com/akang1108/groovy-sql-transform.git'
+//                url 'https://github.com/akang1108/groovy-sql-transform'
+//            }
+//            developers {
+//                developer {
+//                            id 'akang1108'
+//                        name 'Andrew Kang'
+//                        email 'akang@akang.info'
+//                }
+//            }
+//        }
+//    }
+//}
+
+//model {
+//    tasks.publishMavenJavaPublicationToMavenLocal {
+//        dependsOn(project.tasks.signArchives)
+//    }
+//    tasks.publishMavenJavaPublicationToMavenRepository {
+//        dependsOn(project.tasks.signArchives)
+//    }
+//}
+//
+//task install(dependsOn: publishToMavenLocal) {
+//    group = 'Publishing'
+//    description = 'Installs artifacts to local Maven repository'
+//}
+
+
+
+
+
+//if (project.hasProperty('NEXUS_USERNAME')) {
+//    uploadArchives {
+//        repositories.mavenDeployer {
+//            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+//
+//            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+//                authentication(userName: NEXUS_USERNAME, password: NEXUS_PASSWORD)
+//            }
+//
+//            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+//                authentication(userName: NEXUS_USERNAME, password: NEXUS_PASSWORD)
+//            }
+//
+//            pom.project {
+//                scm {
+//                    connection "scm:svn:$scmUrl"
+//                    developerConnection "scm:svn:$scmUrl"
+//                    url scmUrl
+//                }
+//
+//                licenses {
+//                    license {
+//                        name 'The MIT License (MIT)'
+//                        url 'http://opensource.org/licenses/MIT'
+//                    }
+//                }
+//
+//                developers {
+//                    developer {
+//                        id 'akang1108'
+//                        name 'Andrew Kang'
+//                        email 'akang@akang.info'
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}
